@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnggotaRequest;
 use App\Models\Jabatan;
+use App\Models\Rapat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,7 @@ class AnggotaController extends Controller
             // dd($request->all());
             $jabatan = Jabatan::where('nama_jabatan', 'Anggota')->first();
             DB::transaction(function () use ($request, $jabatan) {
-                $user = [
+                $data = [
                     'nama' => $request->nama,
                     'tempat_lahir' => $request->tempat_lahir,
                     'tanggal_lahir' => $request->tanggal_lahir,
@@ -67,7 +68,7 @@ class AnggotaController extends Controller
                         mkdir($save_path, 666, true);
                     }
 
-                    $user['foto'] = $save_path . $filenametostore;
+                    $data['foto'] = $save_path . $filenametostore;
                 }
 
                 $img = Image::make($request->file('foto')->getRealPath());
@@ -75,7 +76,22 @@ class AnggotaController extends Controller
                 $img->save($save_path . $filenametostore);
 
                 // save user
-                User::create($user);
+                $user = User::create($data);
+
+                // save peserta rapat
+                $peserta = [
+                    'id_user' => $user->id_user,
+                    'kehadiran' => 0,
+                ];
+
+                $rapat = Rapat::where('peserta_rapat', '!=', null)->get();
+                foreach($rapat as $key => $value) {
+                    $peserta_rapat = json_decode($value->peserta_rapat);
+                    $peserta_rapat[] = $peserta;
+                    Rapat::where('id_rapat', $value->id_rapat)->update([
+                        'peserta_rapat' => json_encode($peserta_rapat),
+                    ]);
+                }
             });
             return response()->json([
                 'status' => 'success',
@@ -85,6 +101,7 @@ class AnggotaController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
+                // 'message' => $e->getMessage(),
                 'message' => 'Data gagal disimpan',
                 'title' => 'Gagal',
             ]);

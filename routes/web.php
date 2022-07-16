@@ -54,6 +54,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/print', 'RapatController@print')->name('print');
         Route::post('/change-status', 'RapatController@changeStatus')->name('change-status');
         Route::get('/absen/{id_rapat}', 'RapatController@absensi')->name('absensi');
+        Route::post('/proses-absensi', 'RapatController@prosesAbsensi')->name('proses-absensi');
     });
 });
 

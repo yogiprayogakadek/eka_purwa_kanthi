@@ -300,4 +300,67 @@ $(document).ready(function () {
         let id = $(this).data('id')
         absen(id)
     });
+
+    $('body').on('click', '.btn-proses-absensi', function(){
+        let id_rapat = $('#id_rapat').val();
+        let panjang = $('.absensi').length;
+        let anggota = [];
+        let absensi = [];
+        Swal.fire({
+            title: 'Proses absensi?',
+            text: "Absensi akan diproses",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, proses!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                for(let i = 1; i <= (panjang/2); i++) {
+                    absensi[i] = $('input[name=absensi_'+i+']:checked').attr('value');
+                    anggota[i] = $('input[name=absensi_'+i+']:checked').data('user');
+                }
+                let form = $('#formAbsensi')[0]
+                let data = new FormData(form)
+                data.append('absensi', absensi)
+                data.append('anggota', anggota)
+                data.append('id_rapat', id_rapat)
+                $.ajax({
+                    type: "POST",
+                    url: "/rapat/proses-absensi",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    beforeSend: function () {
+                        $('.btn-proses-absensi').attr('disable', 'disabled')
+                        $('.btn-proses-absensi').html('<i class="fa fa-spin fa-spinner"></i>')
+                    },
+                    complete: function () {
+                        $('.btn-proses-absensi').removeAttr('disable')
+                        $('.btn-proses-absensi').html('Simpan')
+                    },
+                    success: function (response) {
+                        // console.log(response)
+                        // $('#form').trigger('reset')
+                        // $(".invalid-feedback").html('')
+                        getData();
+                        Swal.fire(
+                            response.title,
+                            response.message,
+                            response.status
+                        );
+                    },
+                    error: function (error) {
+                        console.log("Error", error);
+                    }
+                });
+            }
+        })
+    });
 });
