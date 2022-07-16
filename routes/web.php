@@ -56,6 +56,17 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/absen/{id_rapat}', 'RapatController@absensi')->name('absensi');
         Route::post('/proses-absensi', 'RapatController@prosesAbsensi')->name('proses-absensi');
     });
+
+    Route::prefix('/keuangan')->name('keuangan.')->group(function(){
+        Route::get('/', 'KeuanganController@index')->name('index');
+        Route::get('/create', 'KeuanganController@create')->name('create');
+        Route::get('/render', 'KeuanganController@render')->name('render');
+        Route::post('/store', 'KeuanganController@store')->name('store');
+        Route::get('/edit/{id}', 'KeuanganController@edit')->name('edit');
+        Route::post('/update', 'KeuanganController@update')->name('update');
+        Route::get('/print', 'KeuanganController@print')->name('print');
+        Route::post('/change-status', 'KeuanganController@changeStatus')->name('change-status');
+    });
 });
 
 Auth::routes();

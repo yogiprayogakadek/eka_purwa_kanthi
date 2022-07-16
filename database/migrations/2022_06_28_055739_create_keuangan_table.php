@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('jenis_keuangan', ['Pemasukan', 'Pengeluaran']);
             $table->date('tanggal_keuangan');
             $table->integer('jumlah');
+            $table->text('keterangan');
             $table->timestamps();
         });
     }

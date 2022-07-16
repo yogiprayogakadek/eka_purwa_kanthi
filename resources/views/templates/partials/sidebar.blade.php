@@ -25,20 +25,24 @@
                             class="side-menu__label">Dashboard</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('anggota') ? 'active'  : '' }}" data-bs-toggle="slide"
-                        href="{{route('anggota.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('anggota.index')}}"><i class="side-menu__icon fe fe-users"></i><span
                             class="side-menu__label">Anggota</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('kegiatan') ? 'active'  : '' }}" data-bs-toggle="slide"
-                        href="{{route('kegiatan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('kegiatan.index')}}"><i class="side-menu__icon fe fe-layers"></i><span
                             class="side-menu__label">Kegiatan</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('pengumuman') ? 'active'  : '' }}" data-bs-toggle="slide"
-                        href="{{route('pengumuman.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('pengumuman.index')}}"><i class="side-menu__icon fe fe-bell"></i><span
                             class="side-menu__label">Pengumuman</span>
                     </a>
                     <a class="side-menu__item has-link {{Request::is('rapat') ? 'active'  : '' }}" data-bs-toggle="slide"
-                        href="{{route('rapat.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                        href="{{route('rapat.index')}}"><i class="side-menu__icon fe fe-file-text"></i><span
                             class="side-menu__label">Rapat</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('keuangan') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('keuangan.index')}}"><i class="side-menu__icon fe fe-dollar-sign"></i><span
+                            class="side-menu__label">Keuangan</span>
                     </a>
                     {{-- <a class="side-menu__item has-link {{Request::is('pegawai') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('pegawai.index')}}"><i class="side-menu__icon fe fe-users"></i><span

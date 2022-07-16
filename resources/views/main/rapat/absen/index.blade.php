@@ -33,7 +33,7 @@
                                         <input type="radio" name="absensi_{{$loop->iteration}}" data-user="{{$item->id_user}}" value="1" class="absensi" {{array_key_exists($item->id_user, $peserta) ? ($peserta[$item->id_user] == 1 ? 'checked' : '') : ''}}>
                                     </td>
                                     <td class="text-center">
-                                        <input type="radio" name="absensi_{{$loop->iteration}}" data-user="{{$item->id_user}}" value="0" class="absensi" {{array_key_exists($item->id_user, $peserta) ? ($peserta[$item->id_user] == 0 ? 'checked' : '') : ''}}>
+                                        <input type="radio" name="absensi_{{$loop->iteration}}" data-user="{{$item->id_user}}" value="0" class="absensi" {{array_key_exists($item->id_user, $peserta) ? ($peserta[$item->id_user] == 0 ? 'checked' : '') : 'checked'}}>
                                     </td>
                                 </tr>
                             @endforeach
