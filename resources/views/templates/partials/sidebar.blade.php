@@ -20,9 +20,25 @@
                     <h3>Main</h3>
                 </li>
                 <li class="slide"> 
-                    <a class="side-menu__item has-link {{Request::is('dashboard') ? 'active' : (Request::is('/') ? 'active' : '') }}" data-bs-toggle="slide"
+                    <a class="side-menu__item has-link {{Request::is('dashboard') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('dashboard.index')}}"><i class="side-menu__icon fe fe-home"></i><span
                             class="side-menu__label">Dashboard</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('anggota') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('anggota.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Anggota</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('kegiatan') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('kegiatan.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Kegiatan</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('pengumuman') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('pengumuman.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Pengumuman</span>
+                    </a>
+                    <a class="side-menu__item has-link {{Request::is('rapat') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('rapat.index')}}"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Rapat</span>
                     </a>
                     {{-- <a class="side-menu__item has-link {{Request::is('pegawai') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('pegawai.index')}}"><i class="side-menu__icon fe fe-users"></i><span

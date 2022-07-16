@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/pegawai/render",
+        url: "/pengumuman/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/pegawai/create",
+        url: "/pengumuman/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -25,6 +25,7 @@ function tambah() {
         },
     });
 }
+
 
 $(document).ready(function () {
     getData();
@@ -48,7 +49,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/pegawai/store",
+            url: "/pengumuman/store",
             data: data,
             processData: false,
             contentType: false,
@@ -74,6 +75,7 @@ $(document).ready(function () {
             error: function (error) {
                 let formName = []
                 let errorName = []
+
                 $.each($('#formAdd').serializeArray(), function (i, field) {
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
@@ -81,13 +83,13 @@ $(document).ready(function () {
                     if (error.responseJSON.errors) {
                         $.each(error.responseJSON.errors, function (key, value) {
                             errorName.push(key)
-                            if($('#'+key).val() == '') {
-                                $('#'+key).addClass('is-invalid');
-                                $('.error-'+key).html(value);
+                            if($('.'+key).val() == '') {
+                                $('.' + key).addClass('is-invalid')
+                                $('.error-' + key).html(value)
                             }
-                        });
+                        })
                         $.each(formName, function (i, field) {
-                            $.inArray(field, errorName) == -1 ? $('#'+field).removeClass('is-invalid') : $('#'+field).addClass('is-invalid');
+                            $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
                 }
@@ -99,7 +101,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/pegawai/edit/" + id,
+            url: "/pengumuman/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -121,7 +123,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/pegawai/update",
+            url: "/pengumuman/update",
             data: data,
             processData: false,
             contentType: false,
@@ -147,20 +149,21 @@ $(document).ready(function () {
             error: function (error) {
                 let formName = []
                 let errorName = []
-                $.each($('#formAdd').serializeArray(), function (i, field) {
+
+                $.each($('#formEdit').serializeArray(), function (i, field) {
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
                         $.each(error.responseJSON.errors, function (key, value) {
                             errorName.push(key)
-                            if($('#'+key).val() == '') {
-                                $('#'+key).addClass('is-invalid');
-                                $('.error-'+key).html(value);
+                            if($('.'+key).val() == '') {
+                                $('.' + key).addClass('is-invalid')
+                                $('.error-' + key).html(value)
                             }
-                        });
+                        })
                         $.each(formName, function (i, field) {
-                            $.inArray(field, errorName) == -1 ? $('#'+field).removeClass('is-invalid') : $('#'+field).addClass('is-invalid');
+                            $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
                 }
@@ -182,7 +185,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/pegawai/delete/" + id,
+                    url: "/pengumuman/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -221,7 +224,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/pegawai/print/",
+                    url: "/pengumuman/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')
@@ -230,5 +233,44 @@ $(document).ready(function () {
                 });
             }
         })
+    });
+
+    // on change status
+    $('body').on('change', '#status', function() {
+        let idPengumuman = $(this).data('id');
+        let currentStatus = $(this).data('status');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/pengumuman/change-status",
+            data: {
+                id_pengumuman: idPengumuman,
+                status: $(this).val()
+            },
+            success: function(response) {
+                if(response.status != 'success') {
+                    $('#status').val(currentStatus);
+                }
+                getData();
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            },
+            error: function(response) {
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            }
+        });
     });
 });

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggal_kegiatan');
             $table->string('tempat_kegiatan', 100);
             $table->text('keterangan');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

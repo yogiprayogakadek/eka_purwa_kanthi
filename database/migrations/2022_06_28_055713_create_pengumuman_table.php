@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_pengumuman');
             $table->string('judul', 50);
             $table->text('isi');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
