@@ -32,7 +32,7 @@
                     <td>{{$data->tempat_rapat}}</td>
                     <td>{{$data->pimpinan_rapat}}</td>
                     <td>
-                        <span class="badge {{$data->peserta_rapat == null ? 'bg-primary' : 'bg-info'}} btn-absen" style="cursor: pointer" data-id="{{$data->id_rapat}}" data-absen="{{$data->peserta_rapat}}">{{$data->peserta_rapat == null ? 'Absen' : 'Edit/Lihat Absen'}}</span>
+                        <span class="badge {{$data->peserta_rapat == null ? 'bg-primary btn-absen' : 'bg-info detail-absen'}}" style="cursor: pointer" data-id="{{$data->id_rapat}}" data-absen="{{$data->peserta_rapat}}">{{$data->peserta_rapat == null ? 'Absen' : 'Edit/Lihat Absen'}}</span>
                     </td>
                     <td>
                         <span class="badge {{$data->notulen == null ? 'bg-primary' : 'bg-info'}} btn-notulen" style="cursor: pointer" data-id="{{$data->id_rapat}}" data-notulen="{{$data->notulen}}">{{$data->notulen == null ? 'Tambah Notulen' : 'Edit/Lihat Notulen'}}</span>
@@ -79,6 +79,61 @@
         </div>
     </div>
 </div>
+
+<!-- Modal detail absen -->
+<div class="modal fade" id="modalAbsen" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title">Detail Absen</h5>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                                <span class="fa fa-times"></span>
+                            </button>
+                    </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <input type="hidden" name="id_rapat" id="id_rapat">
+                    <table class="table table-hover table-bordered" id="tableAbsen">
+                        <thead>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Kehadiran</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" rowspan="2" class="align-middle text-center">
+                                    <b>Total</b>
+                                </td>
+                                <td>Hadir</td>
+                                <td id="totalHadir"></td>
+                            </tr>
+                            <tr>
+                                <td>Tidak Hadir</td>
+                                <td id="totalTidakHadir"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-update-absen">Ubah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#exampleModal').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        // Use above variables to manipulate the DOM
+        
+    });
+</script>
 
 <script>
     $('#tableData').DataTable({

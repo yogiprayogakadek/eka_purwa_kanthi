@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/rapat/render",
+        url: "/kandidat/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/rapat/create",
+        url: "/kandidat/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -26,29 +26,62 @@ function tambah() {
     });
 }
 
-function absen(id_rapat) {
-    $.ajax({
-        type: "get",
-        url: "/rapat/absen/" + id_rapat,
-        dataType: "json",
-        success: function (response) {
-            $(".render").html(response.data);
-        },
-        error: function (error) {
-            console.log("Error", error);
-        },
-    });
-}
 
 $(document).ready(function () {
     getData();
+    var i = 0;
 
     $('body').on('click', '.btn-add', function () {
+        i = 0;
+        setTimeout(() => {
+            $('.group-hide').hide();
+        }, 300)
         tambah();
     });
 
     $('body').on('click', '.btn-data', function () {
         getData();
+    });
+
+    $('body').on('click', '.btn-add-misi', function(){
+        i++;
+        var html = '<div class=row>'+
+                        '<div class="col-md-10">' +
+                            '<div class="form-group">' +
+                                // '<label>Misi'+i+'</label>' +
+                                '<textarea class="form-control misi'+i+'" name="misi['+i+']" id="misi'+i+'" placeholder="masukkan misi kandidat"></textarea>' +
+                                '<div class="invalid-feedback error-misi'+i+'"></div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-md-2">' +
+                            '<div class="form-group">' +
+                                '<button class="btn btn-danger btn-delete-misi"><i class="fa fa-trash"></i></button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+
+        $('.group-misi').append(html);
+    })
+
+    $('body').on('click', '.btn-delete-misi', function(){
+        $(this).closest('.row').remove();
+    });
+
+    $('body').on('change', '#nama', function(){
+        var id = $(this).val();
+        if(id == '') {
+            $('.group-hide').hide();
+        } else {
+            $('.group-hide').show();
+            $.get("/kandidat/detail-kandidat/"+id, function (data) {
+                console.table(data);
+                $('#tempat-lahir').val(data.tempat_lahir);
+                $('#tanggal-lahir').val(data.tanggal_lahir);
+                $('#alamat').val(data.alamat);
+                $('#jenis-kelamin').val(data.jenis_kelamin);
+                $('#no-hp').val(data.no_hp);
+            });
+        }
     });
 
     // on save button
@@ -62,7 +95,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/rapat/store",
+            url: "/kandidat/store",
             data: data,
             processData: false,
             contentType: false,
@@ -88,23 +121,29 @@ $(document).ready(function () {
             error: function (error) {
                 let formName = []
                 let errorName = []
-
                 $.each($('#formAdd').serializeArray(), function (i, field) {
+                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
+                // console.log(formName)
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
                         $.each(error.responseJSON.errors, function (key, value) {
-                            errorName.push(key)
-                            if($('.'+key).val() == '') {
-                                $('.' + key).addClass('is-invalid')
-                                $('.error-' + key).html(value)
+                            errorName.push(key.replace('.', ''))
+                            if($('.'+key.replace('.', '')).val() == '') {
+                                $('.'+key.replace('.', '')).addClass('is-invalid');
+                                $('.error-'+key.replace('.', '')).html(value);
                             }
-                        })
+                        });
                         $.each(formName, function (i, field) {
+                            // if(!errorName.includes(field)) {
+                            //     $('.'+field).removeClass('is-invalid');
+                            //     $('.error-'+field).html('');
+                            // }
                             $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
+                    // console.log(errorName);
                 }
             }
         });
@@ -114,7 +153,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/rapat/edit/" + id,
+            url: "/kandidat/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -136,7 +175,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/rapat/update",
+            url: "/kandidat/update",
             data: data,
             processData: false,
             contentType: false,
@@ -198,7 +237,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/rapat/delete/" + id,
+                    url: "/kandidat/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -237,7 +276,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/rapat/print/",
+                    url: "/kandidat/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')
@@ -248,147 +287,42 @@ $(document).ready(function () {
         })
     });
 
-    $('body').on('click', '.btn-notulen', function(){
-        let id = $(this).data('id')
-        let notulen = $(this).data('notulen')
-        $('#modalNotulen').modal('show')
-        $('#modalNotulen').find('#id_rapat').val(id)
-        $('#modalNotulen').find('#notulen').val(notulen)
-    });
+    // on change status
+    $('body').on('change', '#status', function() {
+        let idPengumuman = $(this).data('id');
+        let currentStatus = $(this).data('status');
 
-    $('body').on('click', '.btn-update-notulen', function(){
-        let id = $('#modalNotulen').find('#id_rapat').val()
-        let notulen = $('#modalNotulen').find('#notulen').val()
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        if(notulen == '') {
-            $('#modalNotulen').find('#notulen').addClass('is-invalid')
-            $('#modalNotulen').find('.error-notulen').html('Notulen harus diisi')
-            $('#modalNotulen').find('#notulen').focus()
-            return false
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "/rapat/notulen",
-                data: {
-                    id_rapat: id,
-                    notulen: notulen
-                },
-                success: function (response) {
-                    $('#modalNotulen').modal('hide')
-                    $('#modalNotulen').find('#notulen').removeClass('is-invalid')
-                    $('#modalNotulen').find('.error-notulen').html('')
-                    getData();
-                    Swal.fire(
-                        response.title,
-                        response.message,
-                        response.status
-                    );
-                    // $('#modalNotulen').find('#notulen').val(response.data)
-                },
-                error: function (error) {
-                    console.log("Error", error);
-                }
-            })
-        }
-    });
 
-    $('body').on('click', '.btn-absen', function(){
-        let id = $(this).data('id')
-        absen(id)
-    });
-
-    $('body').on('click', '.btn-proses-absensi', function(){
-        let id_rapat = $('#id_rapat').val();
-        let panjang = $('.absensi').length;
-        let anggota = [];
-        let absensi = [];
-        Swal.fire({
-            title: 'Proses absensi?',
-            text: "Absensi akan diproses",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, proses!'
-        }).then((result) => {
-            if (result.value) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                for(let i = 1; i <= (panjang/2); i++) {
-                    absensi[i] = $('input[name=absensi_'+i+']:checked').attr('value');
-                    anggota[i] = $('input[name=absensi_'+i+']:checked').data('user');
+        $.ajax({
+            type: "POST",
+            url: "/kandidat/change-status",
+            data: {
+                id_pengumuman: idPengumuman,
+                status: $(this).val()
+            },
+            success: function(response) {
+                if(response.status != 'success') {
+                    $('#status').val(currentStatus);
                 }
-                let form = $('#formAbsensi')[0]
-                let data = new FormData(form)
-                data.append('absensi', absensi)
-                data.append('anggota', anggota)
-                data.append('id_rapat', id_rapat)
-                $.ajax({
-                    type: "POST",
-                    url: "/rapat/proses-absensi",
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    beforeSend: function () {
-                        $('.btn-proses-absensi').attr('disable', 'disabled')
-                        $('.btn-proses-absensi').html('<i class="fa fa-spin fa-spinner"></i>')
-                    },
-                    complete: function () {
-                        $('.btn-proses-absensi').removeAttr('disable')
-                        $('.btn-proses-absensi').html('Simpan')
-                    },
-                    success: function (response) {
-                        // console.log(response)
-                        // $('#form').trigger('reset')
-                        // $(".invalid-feedback").html('')
-                        getData();
-                        Swal.fire(
-                            response.title,
-                            response.message,
-                            response.status
-                        );
-                    },
-                    error: function (error) {
-                        console.log("Error", error);
-                    }
-                });
+                getData();
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            },
+            error: function(response) {
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
             }
-        })
-    });
-
-    $('body').on('click', '.detail-absen', function(){
-        let id = $(this).data('id')
-        $('#modalAbsen').find('#id_rapat').val(id)
-        $('#modalAbsen').modal('show')
-        $('#tableAbsen tbody').empty()
-        // $('#tableAbsen #total').empty()
-        $.get("/rapat/detail-absensi/"+id, function (response) {
-            $('#modalAbsen').find('.modal-title').html('Detail Absensi - ' + response.rapat.perihal_rapat)
-            $.each(response.data, function (index, value) { 
-                let tr = '<tr>' +
-                            '<td>'+value.no+'</td>' +
-                            '<td>'+value.nama+'</td>' +
-                            '<td>'+value.jabatan+'</td>' +
-                            '<td>'+value.kehadiran+'</td>' +
-                        '</tr>'
-                $('#tableAbsen tbody').append(tr)
-            });
-            $('#tableAbsen #totalHadir').html(response.totalHadir + ' orang')
-            $('#tableAbsen #totalTidakHadir').html((response.totalTidakHadir == 0 ? '-' : response.totalTidakHadir + ' orang'))
         });
-    });
-
-    $('body').on('click', '.btn-update-absen', function(){
-        let id = $('#modalAbsen').find('#id_rapat').val()
-        absen(id)
-        $('#modalAbsen').modal('hide')
     });
 });

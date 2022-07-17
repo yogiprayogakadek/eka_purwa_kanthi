@@ -42,10 +42,12 @@
                     <tfoot>
                         <tr>
                             <td colspan="3" class="text-center">
-                                asas
+                                <span class="text-muted">
+                                    <i>Pastikan semua data yang dimasukkan sesuai dengan kehadiran anggota</i>
+                                </span>
                             </td>
-                            <td>
-                                <button class="btn btn-primary pull-right btn-proses-absensi" type="button">
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-proses-absensi" type="button">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </td>

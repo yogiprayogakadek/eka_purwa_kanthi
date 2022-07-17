@@ -181,4 +181,33 @@ class RapatController extends Controller
             ]);
         }
     }
+
+    public function detailAbsensi($id_rapat)
+    {
+        $rapat = Rapat::find($id_rapat);
+        $peserta = json_decode($rapat->peserta_rapat);
+        $data = [];
+        $totalHadir = 0;
+        $totalTidakHadir = 0;
+        foreach($peserta as $key => $value) {
+            $data[] = [
+                'no' => $key + 1,
+                'nama' => User::find($value->id_user)->nama,
+                'jabatan' => User::find($value->id_user)->jabatan->nama_jabatan,
+                'kehadiran' => $value->kehadiran == 1 ? 'Hadir' : 'Tidak Hadir',
+            ];
+            if($value->kehadiran == 1) {
+                $totalHadir++;
+            } else {
+                $totalTidakHadir++;
+            }
+        }
+
+        return response()->json([
+            'data' => $data,
+            'rapat' => $rapat,
+            'totalHadir' => $totalHadir,
+            'totalTidakHadir' => $totalTidakHadir,
+        ]);
+    }
 }

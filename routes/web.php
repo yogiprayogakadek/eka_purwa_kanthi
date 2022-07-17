@@ -21,6 +21,29 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/change-status', 'AnggotaController@changeStatus')->name('change-status');
     });
 
+    Route::prefix('/kandidat')->name('kandidat.')->group(function(){
+        Route::get('/', 'KandidatController@index')->name('index');
+        Route::get('/create', 'KandidatController@create')->name('create');
+        Route::get('/render', 'KandidatController@render')->name('render');
+        Route::post('/store', 'KandidatController@store')->name('store');
+        Route::get('/edit/{id}', 'KandidatController@edit')->name('edit');
+        Route::get('/detail-kandidat/{id_user}', 'KandidatController@detailKandidat')->name('detail-kandidat');
+        Route::post('/update', 'KandidatController@update')->name('update');
+        Route::get('/print', 'KandidatController@print')->name('print');
+        Route::post('/change-status', 'KandidatController@changeStatus')->name('change-status');
+    });
+
+    Route::prefix('/anggota')->name('anggota.')->group(function(){
+        Route::get('/', 'AnggotaController@index')->name('index');
+        Route::get('/create', 'AnggotaController@create')->name('create');
+        Route::get('/render', 'AnggotaController@render')->name('render');
+        Route::post('/store', 'AnggotaController@store')->name('store');
+        Route::get('/edit/{id}', 'AnggotaController@edit')->name('edit');
+        Route::post('/update', 'AnggotaController@update')->name('update');
+        Route::get('/print', 'AnggotaController@print')->name('print');
+        Route::post('/change-status', 'AnggotaController@changeStatus')->name('change-status');
+    });
+
     Route::prefix('/kegiatan')->name('kegiatan.')->group(function(){
         Route::get('/', 'KegiatanController@index')->name('index');
         Route::get('/create', 'KegiatanController@create')->name('create');
@@ -54,6 +77,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/print', 'RapatController@print')->name('print');
         Route::post('/change-status', 'RapatController@changeStatus')->name('change-status');
         Route::get('/absen/{id_rapat}', 'RapatController@absensi')->name('absensi');
+        Route::get('/detail-absensi/{id_rapat}', 'RapatController@detailAbsensi')->name('detail-absensi');
         Route::post('/proses-absensi', 'RapatController@prosesAbsensi')->name('proses-absensi');
     });
 

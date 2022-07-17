@@ -44,6 +44,10 @@
                         href="{{route('keuangan.index')}}"><i class="side-menu__icon fe fe-dollar-sign"></i><span
                             class="side-menu__label">Keuangan</span>
                     </a>
+                    <a class="side-menu__item has-link {{Request::is('kandidat') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('kandidat.index')}}"><i class="side-menu__icon fe fe-user-plus"></i><span
+                            class="side-menu__label">Kandidat</span>
+                    </a>
                     {{-- <a class="side-menu__item has-link {{Request::is('pegawai') ? 'active' : '' }}" data-bs-toggle="slide"
                         href="{{route('pegawai.index')}}"><i class="side-menu__icon fe fe-users"></i><span
                             class="side-menu__label">Data Pegawai</span>
