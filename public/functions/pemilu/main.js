@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/kandidat/render",
+        url: "/pemilu/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/kandidat/create",
+        url: "/pemilu/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -29,59 +29,13 @@ function tambah() {
 
 $(document).ready(function () {
     getData();
-    var i = 0;
 
     $('body').on('click', '.btn-add', function () {
-        i = 0;
-        setTimeout(() => {
-            $('.group-hide').hide();
-        }, 700)
         tambah();
     });
 
     $('body').on('click', '.btn-data', function () {
         getData();
-    });
-
-    $('body').on('click', '.btn-add-misi', function(){
-        i++;
-        var html = '<div class=row>'+
-                        '<div class="col-md-10">' +
-                            '<div class="form-group">' +
-                                // '<label>Misi'+i+'</label>' +
-                                '<textarea class="form-control misi'+i+'" name="misi['+i+']" id="misi'+i+'" placeholder="masukkan misi kandidat"></textarea>' +
-                                '<div class="invalid-feedback error-misi'+i+'"></div>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="col-md-2">' +
-                            '<div class="form-group">' +
-                                '<button class="btn btn-danger btn-delete-misi"><i class="fa fa-trash"></i></button>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
-
-        $('.group-misi').append(html);
-    })
-
-    $('body').on('click', '.btn-delete-misi', function(){
-        $(this).closest('.row').remove();
-    });
-
-    $('body').on('change', '#nama', function(){
-        var id = $(this).val();
-        if(id == '') {
-            $('.group-hide').hide();
-        } else {
-            $('.group-hide').show();
-            $.get("/kandidat/detail-kandidat/"+id, function (data) {
-                console.table(data);
-                $('#tempat-lahir').val(data.tempat_lahir);
-                $('#tanggal-lahir').val(data.tanggal_lahir);
-                $('#alamat').val(data.alamat);
-                $('#jenis-kelamin').val(data.jenis_kelamin);
-                $('#no-hp').val(data.no_hp);
-            });
-        }
     });
 
     // on save button
@@ -95,7 +49,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/kandidat/store",
+            url: "/pemilu/store",
             data: data,
             processData: false,
             contentType: false,
@@ -121,29 +75,23 @@ $(document).ready(function () {
             error: function (error) {
                 let formName = []
                 let errorName = []
+
                 $.each($('#formAdd').serializeArray(), function (i, field) {
-                    // formName.push((field.name.replace(/\[\d+\]/g, '')).replace('.', ''))
                     formName.push(field.name.replace(/\[|\]/g, ''))
                 });
-                // console.log(formName)
                 if (error.status == 422) {
                     if (error.responseJSON.errors) {
                         $.each(error.responseJSON.errors, function (key, value) {
-                            errorName.push(key.replace('.', ''))
-                            if($('.'+key.replace('.', '')).val() == '') {
-                                $('.'+key.replace('.', '')).addClass('is-invalid');
-                                $('.error-'+key.replace('.', '')).html(value);
+                            errorName.push(key)
+                            if($('.'+key).val() == '') {
+                                $('.' + key).addClass('is-invalid')
+                                $('.error-' + key).html(value)
                             }
-                        });
+                        })
                         $.each(formName, function (i, field) {
-                            // if(!errorName.includes(field)) {
-                            //     $('.'+field).removeClass('is-invalid');
-                            //     $('.error-'+field).html('');
-                            // }
                             $.inArray(field, errorName) == -1 ? $('.'+field).removeClass('is-invalid') : $('.'+field).addClass('is-invalid');
                         });
                     }
-                    // console.log(errorName);
                 }
             }
         });
@@ -153,7 +101,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/kandidat/edit/" + id,
+            url: "/pemilu/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -175,7 +123,7 @@ $(document).ready(function () {
         let data = new FormData(form)
         $.ajax({
             type: "POST",
-            url: "/kandidat/update",
+            url: "/pemilu/update",
             data: data,
             processData: false,
             contentType: false,
@@ -237,7 +185,7 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: "get",
-                    url: "/kandidat/delete/" + id,
+                    url: "/pemilu/delete/" + id,
                     dataType: "json",
                     success: function (response) {
                         $(".render").html(response.data);
@@ -276,7 +224,7 @@ $(document).ready(function () {
                 };
                 $.ajax({
                     type: "GET",
-                    url: "/kandidat/print/",
+                    url: "/pemilu/print/",
                     dataType: "json",
                     success: function (response) {
                         document.title= 'Laporan - ' + new Date().toJSON().slice(0,10).replace(/-/g,'/')
@@ -289,7 +237,7 @@ $(document).ready(function () {
 
     // on change status
     $('body').on('change', '#status', function() {
-        let idPengumuman = $(this).data('id');
+        let idPemilu = $(this).data('id');
         let currentStatus = $(this).data('status');
 
         $.ajaxSetup({
@@ -300,9 +248,9 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/kandidat/change-status",
+            url: "/pemilu/change-status",
             data: {
-                id_pengumuman: idPengumuman,
+                id_pemilu: idPemilu,
                 status: $(this).val()
             },
             success: function(response) {

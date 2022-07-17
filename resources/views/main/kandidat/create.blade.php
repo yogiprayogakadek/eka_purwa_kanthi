@@ -2,14 +2,25 @@
     <form id="formAdd">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Data Anggota</div>
+                <div class="card-title">Data Kandidat</div>
                 <div class="card-options">
                     <button class="btn btn-info btn-data" type="button">
                         <i class="fa fa-eye"></i> Data
                     </button>
                 </div>
             </div>
+            @if (count($pemilu) != 0)
             <div class="card-body">
+                <div class="form-group">
+                    <label for="tanggal-pemilu">Tanggal Pemilu</label>
+                        <select name="tanggal_pemilu" id="tanggal-pemilu" class="form-control select2-show-search tanggal_pemilu">
+                            <option value="">Pilih tanggal pemilu</option>
+                            @foreach ($pemilu as $pemilu)
+                            <option value="{{$pemilu->id_pemilu}}">{{$pemilu->tanggal_pemilu}}</option>
+                            @endforeach
+                        </select>
+                    <div class="invalid-feedback error-tanggal_pemilu"></div>
+                </div>
                 <div class="form-group">
                     <label for="nama">Nama Kandidat</label>
                         <select name="nama" id="nama" class="form-control select2-show-search nama">
@@ -79,6 +90,12 @@
                     </div>
                 </div>
             </div>
+            @else
+            <div class="alert alert-warning">
+                <i class="fa fa-exclamation-triangle"></i>
+                <strong>Tidak ada Pemilihan Umum yang aktif atau sudah lewat dari tanggal pemilihan</strong>
+            </div>
+            @endif
         </div>
     </form>
 </div>

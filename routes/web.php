@@ -29,19 +29,26 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::get('/edit/{id}', 'KandidatController@edit')->name('edit');
         Route::get('/detail-kandidat/{id_user}', 'KandidatController@detailKandidat')->name('detail-kandidat');
         Route::post('/update', 'KandidatController@update')->name('update');
+        Route::get('/delete/{id_kandidat}', 'KandidatController@delete')->name('delete');
         Route::get('/print', 'KandidatController@print')->name('print');
         Route::post('/change-status', 'KandidatController@changeStatus')->name('change-status');
     });
 
-    Route::prefix('/anggota')->name('anggota.')->group(function(){
-        Route::get('/', 'AnggotaController@index')->name('index');
-        Route::get('/create', 'AnggotaController@create')->name('create');
-        Route::get('/render', 'AnggotaController@render')->name('render');
-        Route::post('/store', 'AnggotaController@store')->name('store');
-        Route::get('/edit/{id}', 'AnggotaController@edit')->name('edit');
-        Route::post('/update', 'AnggotaController@update')->name('update');
-        Route::get('/print', 'AnggotaController@print')->name('print');
-        Route::post('/change-status', 'AnggotaController@changeStatus')->name('change-status');
+    Route::prefix('/pemilu')->name('pemilu.')->group(function(){
+        Route::get('/', 'PemiluController@index')->name('index');
+        Route::get('/create', 'PemiluController@create')->name('create');
+        Route::get('/render', 'PemiluController@render')->name('render');
+        Route::post('/store', 'PemiluController@store')->name('store');
+        Route::get('/edit/{id}', 'PemiluController@edit')->name('edit');
+        Route::post('/update', 'PemiluController@update')->name('update');
+        Route::get('/print', 'PemiluController@print')->name('print');
+        Route::post('/change-status', 'PemiluController@changeStatus')->name('change-status');
+    });
+
+    Route::prefix('/voting')->name('voting.')->group(function(){
+        Route::get('/', 'VotingController@index')->name('index');
+        Route::get('/render', 'VotingController@render')->name('render');
+        Route::post('/store', 'VotingController@store')->name('store');
     });
 
     Route::prefix('/kegiatan')->name('kegiatan.')->group(function(){

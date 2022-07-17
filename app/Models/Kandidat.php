@@ -17,4 +17,9 @@ class Kandidat extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function pemilu()
+    {
+        return $this->belongsTo(Pemilu::class, 'id_pemilu');
+    }
 }

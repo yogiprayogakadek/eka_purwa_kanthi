@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class KandidatRequest extends FormRequest
+class PemiluRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,8 @@ class KandidatRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'tanggal_pemilu' => 'required',
-            'nama' => 'required',
-            'visi' => 'required',
+            'tanggal_pemilu' => 'required|date',
         ];
-
-        for($i = 0; $i < count($this->input('misi')); $i++) {
-            $rules['misi.'.$i] = 'required';
-        }
-
         return $rules;
     }
 
@@ -40,22 +33,14 @@ class KandidatRequest extends FormRequest
     {
         return [
             'required' => ':attribute tidak boleh kosong',
+            'date' => ':attribute harus berupa tanggal',
         ];
     }
 
     public function attributes()
     {
-        $attr = [
+        return [
             'tanggal_pemilu' => 'Tanggal pemilu',
-            'nama' => 'Nama kandiadat',
-            'visi' => 'Visi',
         ];
-
-        for($i = 0; $i < count($this->input('misi')); $i++) {
-            $attr['misi.'.$i] = 'Misi ';
-        }
-
-        return $attr;
     }
 }
-

@@ -44,61 +44,18 @@
                         href="{{route('keuangan.index')}}"><i class="side-menu__icon fe fe-dollar-sign"></i><span
                             class="side-menu__label">Keuangan</span>
                     </a>
+                    <a class="side-menu__item has-link {{Request::is('pemilu') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('pemilu.index')}}"><i class="side-menu__icon fe fe-info"></i><span
+                            class="side-menu__label">Pemilu</span>
+                    </a>
                     <a class="side-menu__item has-link {{Request::is('kandidat') ? 'active'  : '' }}" data-bs-toggle="slide"
                         href="{{route('kandidat.index')}}"><i class="side-menu__icon fe fe-user-plus"></i><span
                             class="side-menu__label">Kandidat</span>
                     </a>
-                    {{-- <a class="side-menu__item has-link {{Request::is('pegawai') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('pegawai.index')}}"><i class="side-menu__icon fe fe-users"></i><span
-                            class="side-menu__label">Data Pegawai</span>
+                    <a class="side-menu__item has-link {{Request::is('voting') ? 'active'  : '' }}" data-bs-toggle="slide"
+                        href="{{route('voting.index')}}"><i class="side-menu__icon fe fe-user-check"></i><span
+                            class="side-menu__label">Voting</span>
                     </a>
-                    <a class="side-menu__item has-link {{Request::is('barang') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('barang.index')}}"><i class="side-menu__icon fe fe-aperture"></i><span
-                            class="side-menu__label">Data Barang</span>
-                    </a>
-                    <a class="side-menu__item has-link {{Request::is('pengadaan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('pengadaan.index')}}"><i class="side-menu__icon fe fe-book"></i><span
-                            class="side-menu__label">Pengadaan Barang</span>
-                            @can('validator')
-                            <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
-                            @endcan
-                            @can('staff_administrasi')
-                            <span class="badge bg-pink side-badge">{{pengadaanNeedApproval()}}</span>
-                            @endcan
-                            @can('bendahara')
-                            <span class="badge bg-pink side-badge">{{pengadaanNeedApprovalBendahara()}}</span>
-                            @endcan
-                    </a>
-                    <a class="side-menu__item has-link {{Request::is('perbaikan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('perbaikan.index')}}"><i class="side-menu__icon fe fe-slack"></i><span
-                            class="side-menu__label">Perbaikan Barang</span>
-                            @can('validator')
-                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perbaikan')}}</span>
-                            @endcan
-                            @can('bendahara')
-                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Perbaikan')}}</span>
-                            @endcan
-                    </a>
-                    <a class="side-menu__item has-link {{Request::is('kerusakan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('kerusakan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
-                            class="side-menu__label">Kerusakan Barang</span>
-                            @can('validator')
-                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Kerusakan')}}</span>
-                            @endcan
-                            @can('bendahara')
-                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Kerusakan')}}</span>
-                            @endcan
-                    </a>
-                    <a class="side-menu__item has-link {{Request::is('perawatan') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{route('perawatan.index')}}"><i class="side-menu__icon fe fe-settings"></i><span
-                            class="side-menu__label">Perawatan Barang</span>
-                            @can('validator')
-                            <span class="badge bg-pink side-badge">{{maintenanceNeedApproval('Perawatan')}}</span>
-                            @endcan
-                            @can('bendahara')
-                            <span class="badge bg-pink side-badge">{{maintenaceNeedApproveBendahara('Perawatan')}}</span>
-                            @endcan
-                    </a> --}}
                 </li>
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg"

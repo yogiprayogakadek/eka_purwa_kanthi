@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kandidat', function (Blueprint $table) {
-            $table->id('id_kandidat');
-            $table->foreignId('id_pemilu')->references('id_pemilu')->on('pemilu')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_user')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->json('visi_misi');
+        Schema::create('pemilu', function (Blueprint $table) {
+            $table->id('id_pemilu');
+            $table->date('tanggal_pemilu');
+            $table->json('data_pemilu')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kandidat');
+        Schema::dropIfExists('pemilu');
     }
 };

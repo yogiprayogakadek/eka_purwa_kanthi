@@ -3,7 +3,7 @@
 
 @include('templates.partials.head')
 
-<body class="app sidebar-mini ltr">
+<body class="app sidebar-mini ltr {{Request::is('voting') ? 'sidenav-toggled'  : '' }}">
     <div class="horizontalMenucontainer">
         <!-- GLOBAL-LOADER -->
         <div id="global-loader" style="display: none;"> <img src="https://spruko.com/demo/sash/sash/assets/images/loader.svg" class="loader-img"

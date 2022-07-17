@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <div class="card-title">Data Kandidat</div>
+        <div class="card-title">Data Pemilu</div>
         <div class="card-options">
             {{-- <button class="btn btn-success btn-print">
                 <i class="fa fa-print"></i> Cetak
@@ -15,44 +15,26 @@
         <table class="table table-hover table-striped" id="tableData">
             <thead>
                 <th>No</th>
-                <th>Tempat Lahir</th>
-                <th>Tanggal Lahir</th>
-                <th>Jenis Kelamin</th>
-                <th>No. Hp</th>
-                <th>Alamat</th>
-                <th>Foto</th>
-                <th>Visi</th>
-                <th>Misi</th>
+                <th>Tanggal Pemilu</th>
+                <th>Hasil Pemilu</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </thead>
             <tbody>
-                @foreach ($kandidat as $data)
+                @foreach ($data as $data)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$data->user->nama}}</td>
-                    <td>{{$data->user->tempat_lahir}}</td>
-                    <td>{{$data->user->tanggal_lahir}}</td>
-                    <td>{{$data->user->no_hp}}</td>
-                    <td>{{$data->user->alamat}}</td>
+                    <td>{{$data->tanggal_pemilu}}</td>
+                    <td>{{$data->data_pemilu == null ? 'Belum ada suara masuk' : 'proses'}}</td>
                     <td>
-                        <img src="{{asset($data->user->foto)}}" class="img-rounded" width="100px">
+                        <select name="status" id="status" class="form-control" data-id="{{$data->id_pemilu}}" data-status="{{$data->status}}">
+                            <option value="1" {{$data->status == '1' ? 'selected' : ''}}>Aktif</option>
+                            <option value="0" {{$data->status == '0' ? 'selected' : ''}}>Tidak Aktif</option>
+                        </select>
                     </td>
                     <td>
-                        {{json_decode($data->visi_misi)->visi}}
-                    </td>
-                    <td>
-                        <ul>
-                            @foreach (json_decode($data->visi_misi)->misi as $misi)
-                            {{$loop->iteration}}. {{$misi->misi}} <br>
-                            @endforeach
-                        </ul>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-success btn-sm btn-edit" data-id="{{$data->id_kandidat}}">
+                        <button type="button" class="btn btn-success btn-sm btn-edit" data-id="{{$data->id_pemilu}}">
                             <i class="fa fa-edit"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{$data->id_kandidat}}">
-                            <i class="fa fa-trash"></i>
                         </button>
                     </td>
                 </tr>
