@@ -48,7 +48,8 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
     Route::prefix('/voting')->name('voting.')->group(function(){
         Route::get('/', 'VotingController@index')->name('index');
         Route::get('/render', 'VotingController@render')->name('render');
-        Route::post('/store', 'VotingController@store')->name('store');
+        Route::post('/vote', 'VotingController@vote')->name('vote');
+        Route::get('/chart', 'VotingController@chart')->name('chart');
     });
 
     Route::prefix('/kegiatan')->name('kegiatan.')->group(function(){
