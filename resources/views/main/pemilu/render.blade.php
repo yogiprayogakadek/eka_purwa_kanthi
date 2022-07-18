@@ -18,6 +18,7 @@
                 <th>Tanggal Pemilu</th>
                 <th>Hasil Pemilu</th>
                 <th>Status</th>
+                <th>Chart</th>
                 <th>Aksi</th>
             </thead>
             <tbody>
@@ -25,12 +26,36 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$data->tanggal_pemilu}}</td>
-                    <td>{{$data->data_pemilu == null ? 'Belum ada suara masuk' : 'proses'}}</td>
+                    {{-- <td>{{$data->data_pemilu == null ? 'Belum ada suara masuk' : 'proses'}}</td> --}}
+                    <td>
+                        @if ($data->data_pemilu == null)
+                            <span class="badge bg-warning">Belum ada suara masuk</span>
+                        @else
+                        @php
+                            $data_pemilu = json_decode($data->data_pemilu)->result ?? false;
+                        @endphp
+                            @if ($data_pemilu == false)
+                                <span class="badge bg-info">Mohon aktifkan hasil pada chart</span>
+                            @else
+                                <span class="badge bg-success check-result" style="cursor: pointer;">Lihat hasil</span>
+                            @endif
+                        @endif
+                    </td>
                     <td>
                         <select name="status" id="status" class="form-control" data-id="{{$data->id_pemilu}}" data-status="{{$data->status}}">
                             <option value="1" {{$data->status == '1' ? 'selected' : ''}}>Aktif</option>
                             <option value="0" {{$data->status == '0' ? 'selected' : ''}}>Tidak Aktif</option>
                         </select>
+                    </td>
+                    <td>
+                        @if ($data->data_pemilu == null)
+                        <span class="badge bg-warning">Belum ada suara masuk</span>
+                        @else
+                        <select name="chart" id="chart" class="form-control" data-id="{{$data->id_pemilu}}" data-status="{{json_decode($data->data_pemilu)->result}}">
+                            <option value="true" {{json_decode($data->data_pemilu)->result == true ? 'selected' : ''}}>Aktif</option>
+                            <option value="false" {{json_decode($data->data_pemilu)->result == false ? 'selected' : ''}}>Tidak Aktif</option>
+                        </select>
+                        @endif
                     </td>
                     <td>
                         <button type="button" class="btn btn-success btn-sm btn-edit" data-id="{{$data->id_pemilu}}">

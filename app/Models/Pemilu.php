@@ -17,5 +17,4 @@ class Pemilu extends Model
     {
         return $this->hasMany(Kandidat::class, 'id_pemilu');
     }
-    
 }

@@ -273,4 +273,47 @@ $(document).ready(function () {
             }
         });
     });
+
+    // on status chart change
+    $('body').on('change', '#chart', function() {
+        let idPemilu = $(this).data('id');
+        let currentStatus = $(this).data('status');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/pemilu/change-chart-status",
+            data: {
+                id_pemilu: idPemilu,
+                status: $(this).val()
+            },
+            success: function(response) {
+                if(response.status != 'success') {
+                    $('#chart').val(currentStatus);
+                }
+                getData();
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            },
+            error: function(response) {
+                Swal.fire(
+                    response.title,
+                    response.message,
+                    response.status
+                );
+            }
+        });
+    });
+
+    $('body').on('click', '.check-result', function() {
+        window.location.href = '/voting';
+    });
 });

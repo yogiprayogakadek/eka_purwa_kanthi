@@ -146,4 +146,38 @@ class PemiluController extends Controller
             ]);
         }
     }
+
+    public function changeChartStatus(Request $request)
+    {
+        try {
+            $status = $request->status == "true" ? true : false;
+            $id_pemilu = $request->id_pemilu;
+            $pemilu = Pemilu::find($id_pemilu);
+            if($pemilu->status == true) {
+                // if($total <= 0) {
+                    $data_pemilu = json_decode($pemilu->data_pemilu, true);
+                    $data_pemilu['result'] = $status;
+                    $pemilu->data_pemilu = json_encode($data_pemilu);
+                    $pemilu->save();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Status berhasil diubah',
+                        'title' => 'Berhasil',
+                    ]);
+            } else {
+                return response()->json([
+                    'status' => 'info',
+                    'message' => 'Status tidak dapat diubah, karena pemilu belum aktif',
+                    'title' => 'Info',
+                ]);
+            }
+        } catch(\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                // 'message' => 'Status gagal di ubah',
+                'title' => 'Gagal'
+            ]);
+        }
+    }
 }

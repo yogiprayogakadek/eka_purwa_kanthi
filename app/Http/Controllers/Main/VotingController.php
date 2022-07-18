@@ -13,7 +13,6 @@ class VotingController extends Controller
     {
         $hasVoted = false;
         $checkIfVoted = Pemilu::where('status', true)->first();
-        $showChart = json_decode($checkIfVoted->data_pemilu)->result;
         if($checkIfVoted->data_pemilu != null) {
             foreach(json_decode($checkIfVoted->data_pemilu)->data as $key => $value) {
                 if(auth()->user()->id_user == $value->id_user) {
@@ -22,13 +21,18 @@ class VotingController extends Controller
             }
         }
 
+        // data kandidat untuk chart
+        $chart = $this->chart();
+        // dd($chart);
+        $showChart = json_decode($checkIfVoted->data_pemilu)->result ?? false;
+
         $pemilu = Pemilu::where('status', true)->pluck('id_pemilu')->toArray();
         if(count($pemilu) > 0){
             $kandidat = Kandidat::whereIn('id_pemilu', $pemilu)->get();
         }else{
             $kandidat = [];
         }
-        return view('main.voting.index', compact('kandidat', 'hasVoted'));
+        return view('main.voting.index', compact('kandidat', 'hasVoted', 'chart', 'showChart'));
     }
 
     public function vote(Request $request)
@@ -69,21 +73,30 @@ class VotingController extends Controller
         $pemilu = Pemilu::where('status', true)->first();
         $kandidat = Kandidat::where('id_pemilu', $pemilu->id_pemilu)->get();
         
-        $data_pemilu = json_decode($pemilu->data_pemilu)->data;
-        foreach($data_pemilu as $key => $value) {
-            $kandidat_pemilu[] = $value->id_kandidat;
+        if($pemilu->data_pemilu != null) {
+            $data_pemilu = json_decode($pemilu->data_pemilu)->data;
+            foreach($data_pemilu as $key => $value) {
+                $kandidat_pemilu[] = $value->id_kandidat;
+            }
+
+            $data =[];
+            $total = 0;
+            foreach($kandidat as $key => $value){
+                if(in_array($value->id_kandidat, $kandidat_pemilu)) {
+                    $total++;
+                }
+                $data[] = [
+                    'nama' => $value->user->nama,
+                    // 'suara' => $value->id_kandidat != $data_pemilu->id_kandidat ? 0 : $data[$value->id_kandidat]['suara'] + 1,
+                    // 'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $data[$value->id_kandidat]['suara'] + 1 : 0,
+                    'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $total : 0,
+                ];
+            }
+            // $data = json_decode($pemilu->data_pemilu)->data;
+        } else {
+            $data = [];
         }
-        // dd($kandidat_pemilu);
-        $data =[];
-        foreach($kandidat as $key => $value){
-            // dd($value);
-            $data[$value->id_kandidat] = [
-                'nama' => $value->user->nama,
-                // 'suara' => $value->id_kandidat != $data_pemilu->id_kandidat ? 0 : $data[$value->id_kandidat]['suara'] + 1,
-                // 'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $data[$value->id_kandidat]['suara'] + 1 : 0,
-                'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $data[$value->id_kandidat]['suara'] + 1 : 0,
-            ];
-        }
-        dd($data);
+
+        return $data;
     }
 }

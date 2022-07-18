@@ -43,6 +43,7 @@ Route::prefix('/')->namespace('Main')->middleware('auth')->group(function(){
         Route::post('/update', 'PemiluController@update')->name('update');
         Route::get('/print', 'PemiluController@print')->name('print');
         Route::post('/change-status', 'PemiluController@changeStatus')->name('change-status');
+        Route::post('/change-chart-status', 'PemiluController@changeChartStatus')->name('change-chart-status');
     });
 
     Route::prefix('/voting')->name('voting.')->group(function(){
