@@ -11,6 +11,14 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
+                    <label for="jabatan">Jabatan</label>
+                    <select name="jabatan" id="jabatan" class="form-control">
+                        @foreach ($jabatan as $jabatan)
+                        <option value="{{$jabatan->id_jabatan}}">{{$jabatan->nama_jabatan}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="nama">Nama Anggota</label>
                     <input type="text" class="form-control nama" name="nama" id="nama" placeholder="masukkan nama anggota">
                     <div class="invalid-feedback error-nama"></div>

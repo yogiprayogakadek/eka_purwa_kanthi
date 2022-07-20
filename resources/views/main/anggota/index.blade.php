@@ -1,8 +1,8 @@
 @extends('templates.master')
 
-@section('title', 'Anggota')
-@section('pwd', 'Anggota')
-@section('sub-pwd', 'Anggota')
+@section('title', 'Data ST. Eka Purwa Kanthi')
+@section('pwd', 'ST. Eka Purwa Kanthi')
+@section('sub-pwd', 'ST. Eka Purwa Kanthi')
 @push('css')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush

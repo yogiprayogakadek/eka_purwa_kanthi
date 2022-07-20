@@ -11,6 +11,14 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
+                    <label for="jabatan">Jabatan</label>
+                    <select name="jabatan" id="jabatan" class="form-control">
+                        @foreach ($jabatan as $jabatan)
+                        <option value="{{$jabatan->id_jabatan}}" {{$jabatan->id_jabatan == $user->id_jabatan ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <input type="hidden" name="id_user" value="{{$user->id_user}}">
                     <label for="nama">Nama Anggota</label>
                     <input type="text" class="form-control nama" name="nama" id="nama" placeholder="masukkan nama anggota" value="{{$user->nama}}">
@@ -58,7 +66,7 @@
                 </div>
                 {{-- </form> --}}
                 <div class="form-group">
-                    <button class="btn btn-success btn-save pull-right" type="button">
+                    <button class="btn btn-success btn-update pull-right" type="button">
                         <i class="fa fa-save"></i> Simpan
                     </button>
                 </div>

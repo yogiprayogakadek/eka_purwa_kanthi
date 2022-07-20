@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <div class="card-title">Data Anggota</div>
+        <div class="card-title">Data Pengurus dan Anggota ST. Eka Purwa Kanthi</div>
         <div class="card-options">
             {{-- <button class="btn btn-success btn-print">
                 <i class="fa fa-print"></i> Cetak
@@ -21,6 +21,7 @@
                 <th>No. Hp</th>
                 <th>Alamat</th>
                 <th>Foto</th>
+                <th>Jabatan</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </thead>
@@ -36,6 +37,7 @@
                     <td>
                         <img src="{{asset($data->foto)}}" class="img-rounded" width="100px">
                     </td>
+                    <td>{{$data->jabatan->nama_jabatan}}</td>
                     <td>
                         <select name="status" id="status" class="form-control" data-id="{{$data->id_user}}" data-status="{{$data->is_active}}">
                             <option value="1" {{$data->is_active == '1' ? 'selected' : ''}}>Aktif</option>

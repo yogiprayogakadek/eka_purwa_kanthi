@@ -27,7 +27,9 @@ class VotingController extends Controller
             $hasVoted = false;
             $showChart = false;
         }
-    
+
+        // dd($hasVoted);
+
         // data kandidat untuk chart
         $chart = $this->chart();
         // dd($chart);
