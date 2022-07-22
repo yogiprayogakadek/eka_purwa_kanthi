@@ -84,28 +84,32 @@ class VotingController extends Controller
         } else {
             $pemilu = Pemilu::latest()->first();
         }
-        $kandidat = Kandidat::where('id_pemilu', $pemilu->id_pemilu)->get();
-        
-        if($pemilu->data_pemilu != null) {
-            $data_pemilu = json_decode($pemilu->data_pemilu)->data;
-            foreach($data_pemilu as $key => $value) {
-                $kandidat_pemilu[] = $value->id_kandidat;
-            }
-
-            $data =[];
-            $total = 0;
-            foreach($kandidat as $key => $value){
-                if(in_array($value->id_kandidat, $kandidat_pemilu)) {
-                    $total++;
+        if($ifNotNull) {
+            $kandidat = Kandidat::where('id_pemilu', $pemilu->id_pemilu)->get();
+            
+            if($pemilu->data_pemilu != null) {
+                $data_pemilu = json_decode($pemilu->data_pemilu)->data;
+                foreach($data_pemilu as $key => $value) {
+                    $kandidat_pemilu[] = $value->id_kandidat;
                 }
-                $data[] = [
-                    'nama' => $value->user->nama,
-                    // 'suara' => $value->id_kandidat != $data_pemilu->id_kandidat ? 0 : $data[$value->id_kandidat]['suara'] + 1,
-                    // 'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $data[$value->id_kandidat]['suara'] + 1 : 0,
-                    'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $total : 0,
-                ];
+    
+                $data =[];
+                $total = 0;
+                foreach($kandidat as $key => $value){
+                    if(in_array($value->id_kandidat, $kandidat_pemilu)) {
+                        $total++;
+                    }
+                    $data[] = [
+                        'nama' => $value->user->nama,
+                        // 'suara' => $value->id_kandidat != $data_pemilu->id_kandidat ? 0 : $data[$value->id_kandidat]['suara'] + 1,
+                        // 'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $data[$value->id_kandidat]['suara'] + 1 : 0,
+                        'suara' => in_array($value->id_kandidat, $kandidat_pemilu) ? $total : 0,
+                    ];
+                }
+                // $data = json_decode($pemilu->data_pemilu)->data;
+            } else {
+                $data = [];
             }
-            // $data = json_decode($pemilu->data_pemilu)->data;
         } else {
             $data = [];
         }
