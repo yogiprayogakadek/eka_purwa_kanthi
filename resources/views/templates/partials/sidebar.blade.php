@@ -2,11 +2,11 @@
     <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
     <div class="app-sidebar ps ps--active-y sidemenu-scroll">
         <div class="side-header"> <a class="header-brand1" href="{{route('main')}}"> <img
-                    src="{{asset('assets/images/logo.jpeg')}}" class="header-brand-img desktop-logo"
+                    src="{{asset('assets/images/logo-stt.jpeg')}}" class="header-brand-img desktop-logo"
                     alt="logo"> <img src="{{asset('assets/images/logo.jpeg')}}"
                     class="header-brand-img toggle-logo" alt="logo"> <img
-                    src="{{asset('assets/images/logo.jpeg')}}" class="header-brand-img light-logo"
-                    alt="logo"> <img src="{{asset('assets/images/logo.jpeg')}}"
+                    src="{{asset('assets/images/logo-stt.jpeg')}}" class="header-brand-img light-logo"
+                    alt="logo"> <img src="{{asset('assets/images/logo-stt.jpeg')}}"
                     class="header-brand-img light-logo1" style="width: 100px" alt="logo"> </a> <!-- LOGO -->
         </div>
         <div class="main-sidemenu">
