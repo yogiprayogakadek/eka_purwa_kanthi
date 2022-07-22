@@ -196,12 +196,6 @@ class AnggotaController extends Controller
                 }
             }
 
-
-
-
-
-
-
             // can create user
 
             // save user if can create true

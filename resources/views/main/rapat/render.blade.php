@@ -5,10 +5,11 @@
             {{-- <button class="btn btn-success btn-print">
                 <i class="fa fa-print"></i> Cetak
             </button> --}}
-
+            @can('ketua_sekretaris')
             <button class="btn btn-primary btn-add" style="margin-left: 2px">
                 <i class="fa fa-plus"></i> Tambah
             </button>
+            @endcan
         </div>
     </div>
     <div class="card-body">
@@ -21,7 +22,9 @@
                 <th>Pimpinan Rapat</th>
                 <th>Peserta Rapat</th>
                 <th>Notulen</th>
+                @can('ketua_sekretaris')
                 <th>Aksi</th>
+                @endcan
             </thead>
             <tbody>
                 @foreach ($data as $data)
@@ -37,6 +40,7 @@
                     <td>
                         <span class="badge {{$data->notulen == null ? 'bg-primary' : 'bg-info'}} btn-notulen" style="cursor: pointer" data-id="{{$data->id_rapat}}" data-notulen="{{$data->notulen}}">{{$data->notulen == null ? 'Tambah Notulen' : 'Edit/Lihat Notulen'}}</span>
                     </td>
+                    @can('ketua_sekretaris')
                     <td>
                         <button type="button" class="btn btn-success btn-sm btn-edit" data-id="{{$data->id_rapat}}">
                             <i class="fa fa-edit"></i>
@@ -45,6 +49,7 @@
                             <i class="fa fa-trash"></i>
                         </button> --}}
                     </td>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>
@@ -72,10 +77,12 @@
                     </div>
                 </div>
             </div>
+            @can('ketua_sekretaris')
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 <button type="button" class="btn btn-primary btn-update-notulen">Simpan</button>
             </div>
+            @endcan
         </div>
     </div>
 </div>
@@ -118,22 +125,15 @@
                     </table>
                 </div>
             </div>
+            @can('ketua_sekretaris')
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary btn-update-absen">Ubah</button>
             </div>
+            @endcan
         </div>
     </div>
 </div>
-
-<script>
-    $('#exampleModal').on('show.bs.modal', event => {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
-        // Use above variables to manipulate the DOM
-        
-    });
-</script>
 
 <script>
     $('#tableData').DataTable({

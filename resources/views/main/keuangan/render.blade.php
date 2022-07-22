@@ -5,10 +5,11 @@
             {{-- <button class="btn btn-success btn-print">
                 <i class="fa fa-print"></i> Cetak
             </button> --}}
-
+            @can('ketua_bendahara')
             <button class="btn btn-primary btn-add" style="margin-left: 2px">
                 <i class="fa fa-plus"></i> Tambah
             </button>
+            @endcan
         </div>
     </div>
     <div class="card-body">
@@ -19,7 +20,9 @@
                 <th>Tanggal</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
+                @can('ketua_bendahara')
                 <th>Aksi</th>
+                @endcan
             </thead>
             <tbody>
                 @foreach ($data as $data)
@@ -29,6 +32,7 @@
                     <td>{{$data->tanggal_keuangan}}</td>
                     <td>{{convertToRupiah($data->jumlah)}}</td>
                     <td>{{$data->keterangan}}</td>
+                    @can('ketua_bendahara')
                     <td>
                         <button type="button" class="btn btn-success btn-sm btn-edit" data-id="{{$data->id_keuangan}}">
                             <i class="fa fa-edit"></i>
@@ -37,6 +41,7 @@
                             <i class="fa fa-trash"></i>
                         </button> --}}
                     </td>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>

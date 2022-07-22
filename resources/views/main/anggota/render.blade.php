@@ -5,10 +5,11 @@
             {{-- <button class="btn btn-success btn-print">
                 <i class="fa fa-print"></i> Cetak
             </button> --}}
-
+            @can('ketua_sekretaris')
             <button class="btn btn-primary btn-add" style="margin-left: 2px">
                 <i class="fa fa-plus"></i> Tambah
             </button>
+            @endcan
         </div>
     </div>
     <div class="card-body">
@@ -22,8 +23,10 @@
                 <th>Alamat</th>
                 <th>Foto</th>
                 <th>Jabatan</th>
+                @can('ketua_sekretaris')
                 <th>Status</th>
                 <th>Aksi</th>
+                @endcan
             </thead>
             <tbody>
                 @foreach ($data as $data)
@@ -38,6 +41,7 @@
                         <img src="{{asset($data->foto)}}" class="img-rounded" width="100px">
                     </td>
                     <td>{{$data->jabatan->nama_jabatan}}</td>
+                    @can('ketua_sekretaris')
                     <td>
                         <select name="status" id="status" class="form-control" data-id="{{$data->id_user}}" data-status="{{$data->is_active}}">
                             <option value="1" {{$data->is_active == '1' ? 'selected' : ''}}>Aktif</option>
@@ -52,6 +56,7 @@
                             <i class="fa fa-trash"></i>
                         </button> --}}
                     </td>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>

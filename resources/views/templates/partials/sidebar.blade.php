@@ -44,6 +44,7 @@
                         href="{{route('keuangan.index')}}"><i class="side-menu__icon fe fe-dollar-sign"></i><span
                             class="side-menu__label">Keuangan</span>
                     </a>
+                    @can('admin')
                     <a class="side-menu__item has-link {{Request::is('pemilu') ? 'active'  : '' }}" data-bs-toggle="slide"
                         href="{{route('pemilu.index')}}"><i class="side-menu__icon fe fe-info"></i><span
                             class="side-menu__label">Pemilu</span>
@@ -52,6 +53,7 @@
                         href="{{route('kandidat.index')}}"><i class="side-menu__icon fe fe-user-plus"></i><span
                             class="side-menu__label">Kandidat</span>
                     </a>
+                    @endcan
                     <a class="side-menu__item has-link {{Request::is('voting') ? 'active'  : '' }}" data-bs-toggle="slide"
                         href="{{route('voting.index')}}"><i class="side-menu__icon fe fe-user-check"></i><span
                             class="side-menu__label">Voting</span>
